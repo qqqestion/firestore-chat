@@ -1,3 +1,7 @@
+/**
+ * Was created by Sarthak Garg
+ * https://medium.com/flobiz-blog/fragment-view-binding-initialisation-using-delegates-8cd50b41e1d2
+ */
 package ru.tashkent.messenger.viewbinding
 
 import android.os.Handler
