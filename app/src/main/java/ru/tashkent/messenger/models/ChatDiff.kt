@@ -1,4 +1,4 @@
-package ru.tashkent.notes.models
+package ru.tashkent.messenger.models
 
 import androidx.recyclerview.widget.DiffUtil
 import ru.tashkent.domain.models.Chat

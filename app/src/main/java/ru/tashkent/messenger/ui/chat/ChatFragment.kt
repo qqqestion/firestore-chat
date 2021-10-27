@@ -1,4 +1,4 @@
-package ru.tashkent.notes.ui.chat
+package ru.tashkent.messenger.ui.chat
 
 import android.os.Bundle
 import android.view.View
@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.tashkent.domain.models.Message
-import ru.tashkent.notes.R
-import ru.tashkent.notes.databinding.FragmentChatBinding
-import ru.tashkent.notes.viewbinding.viewBinding
+import ru.tashkent.messenger.R
+import ru.tashkent.messenger.databinding.FragmentChatBinding
+import ru.tashkent.messenger.viewbinding.viewBinding
 
 class ChatFragment : Fragment(R.layout.fragment_chat) {
 

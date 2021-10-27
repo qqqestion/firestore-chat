@@ -1,4 +1,4 @@
-package ru.tashkent.notes
+package ru.tashkent.messenger
 
 import org.junit.Test
 

@@ -1,8 +1,8 @@
-package ru.tashkent.notes.vhs
+package ru.tashkent.messenger.vhs
 
 import androidx.recyclerview.widget.RecyclerView
 import ru.tashkent.domain.models.Chat
-import ru.tashkent.notes.databinding.ItemChatBinding
+import ru.tashkent.messenger.databinding.ItemChatBinding
 
 class ChatViewHolder(
     private val binding: ItemChatBinding,

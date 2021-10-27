@@ -1,4 +1,4 @@
-package ru.tashkent.notes.ui.mychats
+package ru.tashkent.messenger.ui.mychats
 
 import ru.tashkent.domain.models.Chat
 

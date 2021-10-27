@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/myChatsFragment"
-        android:name="ru.tashkent.notes.ui.mychats.MyChatsFragment"
+        android:name="ru.tashkent.messenger.ui.mychats.MyChatsFragment"
         android:label="MyChatsFragment"
         >
         <action
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
-        android:name="ru.tashkent.notes.ui.chat.ChatFragment"
+        android:name="ru.tashkent.messenger.ui.chat.ChatFragment"
         android:label="ChatFragment"
         >
         <argument

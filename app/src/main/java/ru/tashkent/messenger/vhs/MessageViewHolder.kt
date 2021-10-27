@@ -1,11 +1,11 @@
-package ru.tashkent.notes.vhs
+package ru.tashkent.messenger.vhs
 
 import android.view.Gravity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import ru.tashkent.domain.models.Message
-import ru.tashkent.notes.R
-import ru.tashkent.notes.databinding.ItemMessageBinding
+import ru.tashkent.messenger.R
+import ru.tashkent.messenger.databinding.ItemMessageBinding
 
 class MessageViewHolder(
     private val binding: ItemMessageBinding

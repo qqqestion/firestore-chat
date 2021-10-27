@@ -1,4 +1,4 @@
-package ru.tashkent.notes.viewbinding
+package ru.tashkent.messenger.viewbinding
 
 import android.view.View
 import androidx.annotation.MainThread

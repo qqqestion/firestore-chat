@@ -1,12 +1,12 @@
-package ru.tashkent.notes.ui.mychats
+package ru.tashkent.messenger.ui.mychats
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import ru.tashkent.domain.models.Chat
-import ru.tashkent.notes.databinding.ItemChatBinding
-import ru.tashkent.notes.models.chatDiffUtilCallback
-import ru.tashkent.notes.vhs.ChatViewHolder
+import ru.tashkent.messenger.databinding.ItemChatBinding
+import ru.tashkent.messenger.models.chatDiffUtilCallback
+import ru.tashkent.messenger.vhs.ChatViewHolder
 
 class ChatAdapter(
     val onChatClick: (Chat) -> Unit

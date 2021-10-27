@@ -1,11 +1,8 @@
-package ru.tashkent.notes.ui.mychats
+package ru.tashkent.messenger.ui.mychats
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -17,9 +14,9 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.tashkent.data.models.toFirebaseChat
-import ru.tashkent.notes.R
-import ru.tashkent.notes.databinding.FragmentMychatsBinding
-import ru.tashkent.notes.viewbinding.viewBinding
+import ru.tashkent.messenger.R
+import ru.tashkent.messenger.databinding.FragmentMychatsBinding
+import ru.tashkent.messenger.viewbinding.viewBinding
 
 class MyChatsFragment : Fragment(R.layout.fragment_mychats) {
 

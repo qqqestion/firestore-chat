@@ -1,4 +1,4 @@
-package ru.tashkent.notes.ui.mychats
+package ru.tashkent.messenger.ui.mychats
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

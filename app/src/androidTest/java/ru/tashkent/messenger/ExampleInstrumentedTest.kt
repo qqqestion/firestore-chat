@@ -1,4 +1,4 @@
-package ru.tashkent.notes
+package ru.tashkent.messenger
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
