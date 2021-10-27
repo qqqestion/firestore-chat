@@ -1,0 +1,115 @@
+package ru.tashkent.data.repositories
+
+import android.util.Log
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.tasks.await
+import logcat.LogPriority
+import logcat.asLog
+import logcat.logcat
+import ru.tashkent.data.awaitResult
+import ru.tashkent.data.models.FirebaseMessage
+import ru.tashkent.data.models.toFirebaseMessage
+import ru.tashkent.domain.MessageRepository
+import ru.tashkent.domain.models.Message
+import java.util.*
+
+internal class MessengerMessageRepository : MessageRepository {
+
+    companion object {
+
+        private const val MESSAGES_COLLECTION = "messages"
+    }
+
+    private val messagesCollection = FirebaseFirestore.getInstance().collection(MESSAGES_COLLECTION)
+
+    private val messagesData = MutableSharedFlow<Message>(
+        replay = 0,
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+
+    override val messages: Flow<Message>
+        get() = messagesData.asSharedFlow()
+
+    override fun initMessages(chatId: String, lastMessageTimeSent: Long) {
+        messagesCollection
+            .whereEqualTo("chatId", chatId)
+            .orderBy("timeSent")
+            .startAfter(Timestamp(Date(lastMessageTimeSent)))
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    logcat(LogPriority.ERROR) { error.asLog() }
+                    return@addSnapshotListener
+                }
+                value?.documentChanges?.forEach {
+                    // pending writes = false && type = modified - add timestamp to current user message
+                    // pending writes = true && type = added - add current user message
+                    // pending writes = false && type = added - add another user message
+                    // pending writes = true && type = modified - change current user message
+
+                    fun isNewMessageFromCurrentUser(doc: DocumentChange) =
+                        doc.type == DocumentChange.Type.MODIFIED &&
+                                doc.document.metadata.hasPendingWrites().not()
+
+                    fun isNewMessageFromAnotherUsers(doc: DocumentChange) =
+                        doc.type == DocumentChange.Type.ADDED &&
+                                doc.document.metadata.hasPendingWrites().not()
+
+                    if (isNewMessageFromCurrentUser(it) or isNewMessageFromAnotherUsers(it)) {
+                        val message = it.document.toObject(FirebaseMessage::class.java)
+                        messagesData.tryEmit(
+                            message.copy(fromCurrentUser = message.sender == FirebaseAuth.getInstance().uid)
+                                .toMessage()
+                        )
+                    }
+                }
+            }
+    }
+
+    override suspend fun getMessagesByChatId(chatId: String): Result<List<Message>> =
+        messagesCollection
+            .whereEqualTo("chatId", chatId)
+            .orderBy("timeSent")
+            .get()
+            .awaitResult()
+            .map { doc ->
+                doc.mapNotNull {
+                    it.toObject(FirebaseMessage::class.java)
+                        .copy(fromCurrentUser = it["sender"] as String == FirebaseAuth.getInstance().uid)
+                        .toMessage()
+                }
+            }
+
+    override suspend fun sendMessage(chatId: String, messageText: String) {
+        val message = FirebaseMessage(
+            "",
+            chatId,
+            FirebaseAuth.getInstance().uid!!,
+            messageText,
+            null
+        )
+        messagesCollection
+            .add(message)
+            .await()
+    }
+
+    override suspend fun deleteMessagesInChat(chatId: String) {
+        messagesCollection
+            .whereEqualTo("chatId", chatId)
+            .get()
+            .await()
+            .documents
+            .onEach {
+                it.reference.delete().await()
+            }
+    }
+}
+
+fun MessageRepository(): MessageRepository = MessengerMessageRepository()

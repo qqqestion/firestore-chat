@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/myChatsFragment"
+    >
+
+    <fragment
+        android:id="@+id/myChatsFragment"
+        android:name="ru.tashkent.notes.ui.mychats.MyChatsFragment"
+        android:label="MyChatsFragment"
+        >
+        <action
+            android:id="@+id/action_myChatsFragment_to_chatFragment"
+            app:destination="@id/chatFragment"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="ru.tashkent.notes.ui.chat.ChatFragment"
+        android:label="ChatFragment"
+        >
+        <argument
+            android:name="chat"
+            app:argType="ru.tashkent.data.models.FirebaseChat"
+            />
+    </fragment>
+</navigation>
