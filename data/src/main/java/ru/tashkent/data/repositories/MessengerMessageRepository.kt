@@ -1,6 +1,5 @@
 package ru.tashkent.data.repositories
 
-import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
@@ -15,8 +14,7 @@ import logcat.asLog
 import logcat.logcat
 import ru.tashkent.data.awaitResult
 import ru.tashkent.data.models.FirebaseMessage
-import ru.tashkent.data.models.toFirebaseMessage
-import ru.tashkent.domain.MessageRepository
+import ru.tashkent.domain.repositories.MessageRepository
 import ru.tashkent.domain.models.Message
 import java.util.*
 
@@ -64,6 +62,7 @@ internal class MessengerMessageRepository : MessageRepository {
 
                     if (isNewMessageFromCurrentUser(it) or isNewMessageFromAnotherUsers(it)) {
                         val message = it.document.toObject(FirebaseMessage::class.java)
+                        logcat { "New message: $message" }
                         messagesData.tryEmit(
                             message.copy(fromCurrentUser = message.sender == FirebaseAuth.getInstance().uid)
                                 .toMessage()

@@ -3,7 +3,7 @@ package ru.tashkent.data.repositories
 import com.google.firebase.firestore.FirebaseFirestore
 import ru.tashkent.data.awaitResult
 import ru.tashkent.data.models.FirebaseChat
-import ru.tashkent.domain.ChatRepository
+import ru.tashkent.domain.repositories.ChatRepository
 import ru.tashkent.domain.models.Chat
 
 internal class MessengerChatRepository internal constructor() : ChatRepository {

@@ -1,4 +1,4 @@
-package ru.tashkent.domain
+package ru.tashkent.domain.repositories
 
 import ru.tashkent.domain.models.Chat
 

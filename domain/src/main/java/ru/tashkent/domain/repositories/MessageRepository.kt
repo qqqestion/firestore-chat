@@ -1,4 +1,4 @@
-package ru.tashkent.domain
+package ru.tashkent.domain.repositories
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
