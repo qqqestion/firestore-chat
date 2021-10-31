@@ -13,6 +13,10 @@ object Versions {
 
     const val squareLogcat = "0.1"
 
+    const val coroutinePlayServices = "1.1.1"
+
+    const val dagger ="2.40"
+
     object Test {
 
         const val junit = "4.13.2"

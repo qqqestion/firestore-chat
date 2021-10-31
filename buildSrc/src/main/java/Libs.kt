@@ -25,7 +25,15 @@ object Libs {
     const val squareLogcat = "com.squareup.logcat:logcat:${Versions.squareLogcat}"
 
     const val coroutinesPlayServices =
-        "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1"
+        "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:${Versions.coroutinePlayServices}"
+
+    const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
+    const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
+
+    const val daggerAndroidProcessor =
+        "com.google.dagger:dagger-android-processor:${Versions.dagger}"
+    const val daggerAndroid = "com.google.dagger:dagger-android:${Versions.dagger}"
+    const val daggerAndroidSupport = "com.google.dagger:dagger-android-support:${Versions.dagger}"
 
     object Test {
 

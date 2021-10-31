@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     id("com.google.gms.google-services")
     id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-kapt")
 }
 
 android {
@@ -61,6 +62,10 @@ dependencies {
     implementation(Libs.lifecycleCommon)
 
     implementation(Libs.squareLogcat)
+
+    kapt(Libs.daggerAndroidProcessor)
+    implementation(Libs.daggerAndroid)
+    implementation(Libs.daggerAndroidSupport)
 
     testImplementation(Libs.Test.junit)
     androidTestImplementation(Libs.AndroidTest.androidJunit)

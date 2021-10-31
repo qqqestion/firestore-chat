@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -45,6 +46,10 @@ dependencies {
     implementation(Libs.coroutinesPlayServices)
 
     implementation(Libs.squareLogcat)
+
+    kapt(Libs.daggerAndroidProcessor)
+    implementation(Libs.daggerAndroid)
+    implementation(Libs.daggerAndroidSupport)
 
     testImplementation(Libs.Test.junit)
     androidTestImplementation(Libs.AndroidTest.androidJunit)
