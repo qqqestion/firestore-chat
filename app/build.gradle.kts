@@ -38,6 +38,9 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    kapt {
+        generateStubs = true
+    }
 }
 
 dependencies {
@@ -63,9 +66,11 @@ dependencies {
 
     implementation(Libs.squareLogcat)
 
-    kapt(Libs.daggerAndroidProcessor)
-    implementation(Libs.daggerAndroid)
-    implementation(Libs.daggerAndroidSupport)
+//    kapt(Libs.daggerAndroidProcessor)
+//    implementation(Libs.daggerAndroid)
+//    implementation(Libs.daggerAndroidSupport)
+    implementation(Libs.dagger)
+    kapt(Libs.daggerCompiler)
 
     testImplementation(Libs.Test.junit)
     androidTestImplementation(Libs.AndroidTest.androidJunit)
