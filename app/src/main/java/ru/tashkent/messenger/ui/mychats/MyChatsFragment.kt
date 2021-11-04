@@ -11,6 +11,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import dagger.Lazy
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.tashkent.data.models.toFirebaseChat
@@ -19,12 +20,18 @@ import ru.tashkent.messenger.R
 import ru.tashkent.messenger.databinding.FragmentMychatsBinding
 import ru.tashkent.messenger.exts.appComponent
 import ru.tashkent.messenger.viewbinding.viewBinding
+import javax.inject.Inject
 
 class MyChatsFragment : Fragment(R.layout.fragment_mychats) {
 
     private val binding by viewBinding<FragmentMychatsBinding>()
 
-    private val viewModel by viewModels<MyChatsViewModel>()
+    @Inject
+    lateinit var viewModelFactory: Lazy<MyChatsViewModel.ViewModelFactory>
+
+    private val viewModel by viewModels<MyChatsViewModel> {
+        viewModelFactory.get()
+    }
 
     private val chatsAdapter = ChatAdapter { chat ->
         findNavController().navigate(
