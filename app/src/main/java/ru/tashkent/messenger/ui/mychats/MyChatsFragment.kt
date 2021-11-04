@@ -14,8 +14,10 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.tashkent.data.models.toFirebaseChat
+import ru.tashkent.messenger.App
 import ru.tashkent.messenger.R
 import ru.tashkent.messenger.databinding.FragmentMychatsBinding
+import ru.tashkent.messenger.exts.appComponent
 import ru.tashkent.messenger.viewbinding.viewBinding
 
 class MyChatsFragment : Fragment(R.layout.fragment_mychats) {
@@ -35,6 +37,7 @@ class MyChatsFragment : Fragment(R.layout.fragment_mychats) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("!!!", "onViewCreated")
+        requireContext().appComponent.inject(this)
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {

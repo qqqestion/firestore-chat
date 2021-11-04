@@ -1,5 +1,6 @@
 package ru.tashkent.messenger.ui.chat
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.core.widget.addTextChangedListener
@@ -15,16 +16,28 @@ import kotlinx.coroutines.launch
 import ru.tashkent.domain.models.Message
 import ru.tashkent.messenger.R
 import ru.tashkent.messenger.databinding.FragmentChatBinding
+import ru.tashkent.messenger.exts.appComponent
 import ru.tashkent.messenger.viewbinding.viewBinding
+import javax.inject.Inject
 
 class ChatFragment : Fragment(R.layout.fragment_chat) {
 
     private val binding by viewBinding<FragmentChatBinding>()
-    private val viewModel by viewModels<ChatViewModel>()
-
     private val args by navArgs<ChatFragmentArgs>()
 
+    @Inject
+    lateinit var factory: ChatViewModel.ViewModelFactory.Factory
+
+    private val viewModel by viewModels<ChatViewModel> {
+        factory.create(args.chat.id!!)
+    }
+
     private val messagesAdapter = MessageAdapter()
+
+    override fun onAttach(context: Context) {
+        requireContext().appComponent.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,7 +67,6 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
         binding.ivOptions.setOnClickListener {
             viewModel.deleteMessages(args.chat.id!!)
         }
-        viewModel.loadMessages(args.chat.id!!)
     }
 
     private fun setupRecyclerView() = with(binding.rvMessages) {
