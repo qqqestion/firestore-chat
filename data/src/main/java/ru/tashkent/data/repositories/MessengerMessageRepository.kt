@@ -17,8 +17,9 @@ import ru.tashkent.data.models.FirebaseMessage
 import ru.tashkent.domain.repositories.MessageRepository
 import ru.tashkent.domain.models.Message
 import java.util.*
+import javax.inject.Inject
 
-internal class MessengerMessageRepository : MessageRepository {
+internal class MessengerMessageRepository @Inject constructor() : MessageRepository {
 
     companion object {
 

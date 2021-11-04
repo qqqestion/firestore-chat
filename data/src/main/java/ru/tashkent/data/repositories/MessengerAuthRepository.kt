@@ -9,8 +9,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import ru.tashkent.data.awaitResult
 import ru.tashkent.domain.repositories.AuthRepository
 import ru.tashkent.domain.VoidResult
+import javax.inject.Inject
 
-internal class MessengerAuthRepository : AuthRepository {
+internal class MessengerAuthRepository @Inject constructor(): AuthRepository {
 
     private val authStateData = MutableSharedFlow<AuthRepository.AuthState>(
         replay = 0,

@@ -5,8 +5,9 @@ import ru.tashkent.data.awaitResult
 import ru.tashkent.data.models.FirebaseChat
 import ru.tashkent.domain.repositories.ChatRepository
 import ru.tashkent.domain.models.Chat
+import javax.inject.Inject
 
-internal class MessengerChatRepository internal constructor() : ChatRepository {
+internal class MessengerChatRepository @Inject internal constructor() : ChatRepository {
 
     companion object {
 
