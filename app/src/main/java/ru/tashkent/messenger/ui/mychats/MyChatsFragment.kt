@@ -1,5 +1,6 @@
 package ru.tashkent.messenger.ui.mychats
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -41,10 +42,14 @@ class MyChatsFragment : Fragment(R.layout.fragment_mychats) {
         )
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireContext().appComponent.inject(this)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("!!!", "onViewCreated")
-        requireContext().appComponent.inject(this)
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
