@@ -7,7 +7,7 @@ import ru.tashkent.domain.repositories.ChatRepository
 import ru.tashkent.domain.models.Chat
 import javax.inject.Inject
 
-internal class MessengerChatRepository @Inject internal constructor() : ChatRepository {
+internal class MessengerChatRepository @Inject constructor() : ChatRepository {
 
     companion object {
 
