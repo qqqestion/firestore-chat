@@ -2,9 +2,9 @@ package ru.tashkent.data.di
 
 import dagger.Module
 import dagger.Provides
-import ru.tashkent.data.repositories.AuthRepository
-import ru.tashkent.data.repositories.ChatRepository
-import ru.tashkent.data.repositories.MessageRepository
+import ru.tashkent.data.repositories.*
+import ru.tashkent.data.repositories.MessengerAuthRepository
+import ru.tashkent.data.repositories.MessengerChatRepository
 import ru.tashkent.domain.repositories.AuthRepository
 import ru.tashkent.domain.repositories.ChatRepository
 import ru.tashkent.domain.repositories.MessageRepository
@@ -13,11 +13,11 @@ import ru.tashkent.domain.repositories.MessageRepository
 class MessengerRepositoryModule {
 
     @Provides
-    fun provideAuthRepository(): AuthRepository = AuthRepository()
+    fun provideAuthRepository(): AuthRepository = MessengerAuthRepository()
 
     @Provides
-    fun provideChatRepository(): ChatRepository = ChatRepository()
+    fun provideChatRepository(): ChatRepository = MessengerChatRepository()
 
     @Provides
-    fun provideMessageRepository(): MessageRepository = MessageRepository()
+    fun provideMessageRepository(): MessageRepository = MessengerMessageRepository()
 }
