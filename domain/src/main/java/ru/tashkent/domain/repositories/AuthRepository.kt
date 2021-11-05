@@ -1,16 +1,28 @@
 package ru.tashkent.domain.repositories
 
-import kotlinx.coroutines.flow.Flow
-import ru.tashkent.domain.VoidResult
+import ru.tashkent.domain.EmptyEither
+import ru.tashkent.domain.models.User
 
 interface AuthRepository {
 
-    suspend fun signIn(): VoidResult
+    suspend fun createAccount(
+        email: User.Email,
+        password: User.Password
+    ): EmptyEither<RegistrationError>
 
-    sealed class AuthState {
-        object NotAuthorized : AuthState()
-        class Authorized(val userId: String) : AuthState()
+    suspend fun login(
+        email: User.Email,
+        password: User.Password
+    ): EmptyEither<LoginError>
+
+    suspend fun checkIfAdditionalInfoSet(): Boolean
+
+    sealed class LoginError {
+        object Unknown : LoginError()
     }
 
-    val flow: Flow<AuthState>
+    sealed class RegistrationError {
+        object UserExists : RegistrationError()
+        object Unknown : RegistrationError()
+    }
 }
