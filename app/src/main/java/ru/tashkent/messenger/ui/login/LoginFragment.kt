@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -50,11 +51,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun handleState(state: AuthState) {
-        val isLoading = state is AuthState.Loading
-        binding.tvLogin.isEnabled = isLoading.not()
+        val isNotLoading = (state is AuthState.Loading).not()
+        binding.tvLogin.isEnabled = isNotLoading
+        binding.progressBar.isInvisible = isNotLoading
         when (state) {
-            AuthState.Empty -> Unit
-            AuthState.Loading -> TODO()
+            AuthState.Empty, AuthState.Loading -> Unit
             is AuthState.Error -> TODO()
             AuthState.InputError.EmailError -> TODO()
             AuthState.InputError.PasswordError -> TODO()
