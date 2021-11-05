@@ -1,7 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/green"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingHorizontal="10dp"
     >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/tv_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:layout_marginTop="10dp"
+        />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:visibility="invisible"
+        />
+
+</LinearLayout>
