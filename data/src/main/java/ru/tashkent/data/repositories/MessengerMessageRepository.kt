@@ -111,5 +111,3 @@ internal class MessengerMessageRepository @Inject constructor() : MessageReposit
             }
     }
 }
-
-fun MessageRepository(): MessageRepository = MessengerMessageRepository()

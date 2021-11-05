@@ -24,5 +24,3 @@ internal class MessengerChatRepository @Inject constructor() : ChatRepository {
                 }
             }
 }
-
-fun ChatRepository(): ChatRepository = MessengerChatRepository()
