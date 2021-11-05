@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import ru.tashkent.messenger.R
 import ru.tashkent.messenger.databinding.FragmentLoginBinding
 import ru.tashkent.messenger.exts.appComponent
+import ru.tashkent.messenger.exts.textOrEmpty
 import ru.tashkent.messenger.viewbinding.viewBinding
 import javax.inject.Inject
 
@@ -37,8 +38,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         binding.tvLogin.setOnClickListener {
             viewModel.login(
-                binding.tilEmail.editText?.text?.toString()?.trim().orEmpty(),
-                binding.tilPassword.editText?.text?.toString()?.trim().orEmpty()
+                binding.tilEmail.textOrEmpty(),
+                binding.tilPassword.textOrEmpty()
             )
         }
 
