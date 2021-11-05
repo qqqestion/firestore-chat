@@ -2,7 +2,6 @@ package ru.tashkent.messenger.ui.login
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
@@ -48,6 +47,20 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 viewModel.state.collect(::handleState)
             }
         }
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.effects.collect(::handleEffect)
+            }
+        }
+    }
+
+    private fun handleEffect(effect: LoginViewModel.Effect) {
+        when (effect) {
+            LoginViewModel.Effect.NavigateToSetupAccount -> findNavController()
+                .navigate(LoginFragmentDirections.actionLoginFragmentToSetInfoFragment())
+            LoginViewModel.Effect.NavigateToMain -> findNavController()
+                .navigate(LoginFragmentDirections.actionLoginFragmentToMyChatsFragment())
+        }
     }
 
     private fun handleState(state: AuthState) {
@@ -55,14 +68,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding.tvLogin.isEnabled = isNotLoading
         binding.progressBar.isInvisible = isNotLoading
         when (state) {
-            AuthState.Empty, AuthState.Loading -> Unit
+            AuthState.Empty, AuthState.Done, AuthState.Loading -> Unit
             is AuthState.Error -> TODO()
             AuthState.InputError.EmailError -> TODO()
             AuthState.InputError.PasswordError -> TODO()
-            AuthState.LoginSuccess -> findNavController()
-                .navigate(LoginFragmentDirections.actionLoginFragmentToMyChatsFragment())
-            AuthState.NavigateToSetupAccount -> findNavController()
-                .navigate(LoginFragmentDirections.actionLoginFragmentToSetInfoFragment())
         }
     }
 }

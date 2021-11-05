@@ -3,10 +3,8 @@ package ru.tashkent.messenger.ui.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.tashkent.domain.AuthUseCase
 import ru.tashkent.domain.models.User
@@ -18,6 +16,18 @@ class LoginViewModel(
 
     private val stateData: MutableStateFlow<AuthState> = MutableStateFlow(AuthState.Empty)
     val state: StateFlow<AuthState> = stateData.asStateFlow()
+
+    enum class Effect {
+        NavigateToSetupAccount,
+        NavigateToMain
+    }
+
+    private val effectsData = MutableSharedFlow<Effect>(
+        replay = 0,
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    val effects: SharedFlow<Effect> = effectsData.asSharedFlow()
 
     init {
         viewModelScope.launch {
@@ -44,10 +54,11 @@ class LoginViewModel(
 
     private fun handleAuth(response: AuthUseCase.AuthResult) {
         val action = when (response) {
-            AuthUseCase.AuthResult.UserLogin -> AuthState.LoginSuccess
-            AuthUseCase.AuthResult.UserCreated, AuthUseCase.AuthResult.UserWithoutName -> AuthState.NavigateToSetupAccount
+            AuthUseCase.AuthResult.UserLogin -> Effect.NavigateToMain
+            AuthUseCase.AuthResult.UserCreated, AuthUseCase.AuthResult.UserWithoutName -> Effect.NavigateToSetupAccount
         }
-        stateData.tryEmit(action)
+        stateData.tryEmit(AuthState.Done)
+        effectsData.tryEmit(action)
     }
 
     class Factory @Inject constructor(
