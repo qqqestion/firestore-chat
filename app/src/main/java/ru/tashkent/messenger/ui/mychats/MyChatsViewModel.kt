@@ -14,8 +14,7 @@ import ru.tashkent.domain.repositories.ChatRepository
 import javax.inject.Inject
 
 class MyChatsViewModel(
-    private val repository: ChatRepository,
-    private val auth: AuthRepository
+    private val repository: ChatRepository
 ) : ViewModel() {
 
     private val stateData: MutableStateFlow<MyChatsState> = MutableStateFlow(MyChatsState.Loading)
@@ -23,11 +22,6 @@ class MyChatsViewModel(
 
     init {
         refreshChats()
-        viewModelScope.launch {
-            auth.signIn().onFailure {
-                logcat { it.asLog() }
-            }
-        }
     }
 
     fun refreshChats() {
@@ -47,14 +41,13 @@ class MyChatsViewModel(
     }
 
     class ViewModelFactory @Inject constructor(
-        private val repository: ChatRepository,
-        private val auth: AuthRepository
+        private val repository: ChatRepository
     ) : ViewModelProvider.Factory {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             require(modelClass == MyChatsViewModel::class.java)
             @Suppress("UNCHECKED_CAST")
-            return MyChatsViewModel(repository, auth) as T
+            return MyChatsViewModel(repository) as T
         }
     }
 }
