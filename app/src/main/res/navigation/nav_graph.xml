@@ -17,6 +17,8 @@
         <action
             android:id="@+id/action_loginFragment_to_myChatsFragment"
             app:destination="@id/myChatsFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"
             />
     </fragment>
 
@@ -26,6 +28,12 @@
         android:label="SetInfoFragment"
         >
 
+        <action
+            android:id="@+id/action_setInfoFragment_to_myChatsFragment"
+            app:destination="@id/myChatsFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"
+            />
     </fragment>
 
     <fragment
