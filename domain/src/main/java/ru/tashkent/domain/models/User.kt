@@ -1,9 +1,7 @@
 package ru.tashkent.domain.models
 
 data class User(
-    val email: Email,
-    val password: Password,
-    val name: Name,
+    val name: Name
 ) {
 
     @JvmInline
@@ -23,6 +21,7 @@ data class User(
         companion object {
 
             fun createIfValid(password: String): Password? {
+                if (password.length < 6) return null
                 return Password(password)
             }
         }
