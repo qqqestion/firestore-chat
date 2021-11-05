@@ -5,10 +5,28 @@
     app:startDestination="@id/loginFragment"
     >
 
-    <fragment android:id="@+id/loginFragment"
+    <fragment
+        android:id="@+id/loginFragment"
         android:name="ru.tashkent.messenger.ui.login.LoginFragment"
         android:label="LoginFragment"
-        />
+        >
+        <action
+            android:id="@+id/action_loginFragment_to_setInfoFragment"
+            app:destination="@id/setInfoFragment"
+            />
+        <action
+            android:id="@+id/action_loginFragment_to_myChatsFragment"
+            app:destination="@id/myChatsFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/setInfoFragment"
+        android:name="ru.tashkent.messenger.ui.setinfo.SetInfoFragment"
+        android:label="SetInfoFragment"
+        >
+
+    </fragment>
 
     <fragment
         android:id="@+id/myChatsFragment"
