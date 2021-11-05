@@ -29,26 +29,32 @@ class AuthUseCase @Inject constructor(
     val flow: SharedFlow<AuthResult> = flowData.asSharedFlow()
 
     suspend fun auth(email: User.Email, password: User.Password) {
-        val create = authRepository.createAccount(email, password)
-        when (create) {
+        when (val create = authRepository.createAccount(email, password)) {
             is Either.Left -> {
-                when (create.value) {
-                    AuthRepository.RegistrationError.Unknown -> TODO()
-                    AuthRepository.RegistrationError.UserExists -> {
-                        val login = authRepository.login(email, password)
-                        when (login) {
-                            is Either.Left -> TODO()
-                            is Either.Right -> {
-                                flowData.tryEmit(
-                                    if (authRepository.checkIfAdditionalInfoSet()) AuthResult.UserLogin
-                                    else AuthResult.UserWithoutName
-                                )
-                            }
-                        }
+                handleRegistrationError(create.value, email, password)
+            }
+            is Either.Right -> flowData.tryEmit(AuthResult.UserCreated)
+        }
+    }
+
+    private suspend fun handleRegistrationError(
+        value: AuthRepository.RegistrationError,
+        email: User.Email,
+        password: User.Password
+    ) {
+        when (value) {
+            AuthRepository.RegistrationError.Unknown -> TODO()
+            AuthRepository.RegistrationError.UserExists -> {
+                when (authRepository.login(email, password)) {
+                    is Either.Left -> TODO()
+                    is Either.Right -> {
+                        flowData.tryEmit(
+                            if (authRepository.checkIfAdditionalInfoSet()) AuthResult.UserLogin
+                            else AuthResult.UserWithoutName
+                        )
                     }
                 }
             }
-            is Either.Right -> flowData.tryEmit(AuthResult.UserCreated)
         }
     }
 }
