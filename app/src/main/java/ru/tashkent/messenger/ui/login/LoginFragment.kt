@@ -50,6 +50,18 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun handleState(state: AuthState) {
-        Log.d("!!!", "$state")
+        val isLoading = state is AuthState.Loading
+        binding.tvLogin.isEnabled = isLoading.not()
+        when (state) {
+            AuthState.Empty -> Unit
+            AuthState.Loading -> TODO()
+            is AuthState.Error -> TODO()
+            AuthState.InputError.EmailError -> TODO()
+            AuthState.InputError.PasswordError -> TODO()
+            AuthState.LoginSuccess -> findNavController()
+                .navigate(LoginFragmentDirections.actionLoginFragmentToMyChatsFragment())
+            AuthState.NavigateToSetupAccount -> findNavController()
+                .navigate(LoginFragmentDirections.actionLoginFragmentToSetInfoFragment())
+        }
     }
 }
