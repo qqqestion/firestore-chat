@@ -10,6 +10,7 @@ data class User(
         companion object {
 
             fun createIfValid(email: String): Email? {
+                if (email.isEmpty()) return null
                 return Email(email)
             }
         }
@@ -33,6 +34,7 @@ data class User(
         companion object {
 
             fun createIfValid(name: String): Name? {
+                if (name.isEmpty()) return null
                 return Name(name)
             }
         }
