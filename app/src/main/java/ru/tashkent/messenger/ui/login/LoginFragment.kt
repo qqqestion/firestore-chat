@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import ru.tashkent.messenger.R
 import ru.tashkent.messenger.databinding.FragmentLoginBinding
 import ru.tashkent.messenger.exts.appComponent
+import ru.tashkent.messenger.exts.showErrorResId
 import ru.tashkent.messenger.exts.textOrEmpty
 import ru.tashkent.messenger.viewbinding.viewBinding
 import javax.inject.Inject
@@ -71,8 +72,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         when (state) {
             AuthState.Empty, AuthState.Done, AuthState.Loading -> Unit
             is AuthState.Error -> TODO()
-            AuthState.InputError.EmailError -> TODO()
-            AuthState.InputError.PasswordError -> TODO()
+            AuthState.InputError.EmailError -> binding.tilEmail.showErrorResId(R.string.error_invalid_email)
+            AuthState.InputError.PasswordError -> binding.tilPassword.showErrorResId(R.string.error_invalid_password)
         }
     }
 }
