@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import ru.tashkent.messenger.R
 import ru.tashkent.messenger.databinding.FragmentLoginBinding
 import ru.tashkent.messenger.exts.appComponent
+import ru.tashkent.messenger.exts.clearErrorOnAnyInput
 import ru.tashkent.messenger.exts.showErrorResId
 import ru.tashkent.messenger.exts.textOrEmpty
 import ru.tashkent.messenger.viewbinding.viewBinding
@@ -36,6 +37,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.tilEmail.clearErrorOnAnyInput()
+        binding.tilPassword.clearErrorOnAnyInput()
 
         binding.tvLogin.setOnClickListener {
             viewModel.login(
