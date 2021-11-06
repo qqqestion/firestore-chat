@@ -1,4 +1,4 @@
-package ru.tashkent.data
+package ru.tashkent.data.exts
 
 import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.tasks.await
