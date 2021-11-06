@@ -1,6 +1,6 @@
-package ru.tashkent.data
+package ru.tashkent.data.exts
 
 import com.google.firebase.Timestamp
 
-val Timestamp.millis
+internal val Timestamp.millis
     get() = this.seconds * 1000 + this.nanoseconds / 1000000

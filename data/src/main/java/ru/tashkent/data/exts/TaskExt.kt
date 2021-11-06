@@ -5,7 +5,7 @@ import kotlinx.coroutines.tasks.await
 import ru.tashkent.domain.Either
 
 
-suspend fun <T> Task<T>.awaitResult(): Result<T> {
+internal suspend fun <T> Task<T>.awaitResult(): Result<T> {
     return try {
         Result.success(await())
     } catch (e: Exception) {
@@ -13,7 +13,7 @@ suspend fun <T> Task<T>.awaitResult(): Result<T> {
     }
 }
 
-suspend fun <T> Task<T>.awaitTask(): Either<Throwable, T> {
+internal suspend fun <T> Task<T>.awaitTask(): Either<Throwable, T> {
     return try {
         Either.Right(await())
     } catch (e: Exception) {
