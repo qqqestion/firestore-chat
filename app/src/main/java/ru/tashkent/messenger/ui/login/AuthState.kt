@@ -6,8 +6,6 @@ sealed class AuthState {
     object Loading : AuthState()
     object Done : AuthState()
 
-    class Error(val error: Throwable) : AuthState()
-
     sealed class InputError : AuthState() {
         object EmailError : InputError()
         object PasswordError : InputError()

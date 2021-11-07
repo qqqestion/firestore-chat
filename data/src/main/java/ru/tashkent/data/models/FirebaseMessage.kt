@@ -4,7 +4,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.ServerTimestamp
-import ru.tashkent.data.millis
+import ru.tashkent.data.exts.millis
 import ru.tashkent.domain.models.Message
 import java.util.*
 

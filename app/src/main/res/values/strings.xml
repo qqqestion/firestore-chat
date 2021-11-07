@@ -3,4 +3,5 @@
     <string name="error_unknown">Error</string>
     <string name="error_invalid_email">Invalid email</string>
     <string name="error_invalid_password">Invalid password</string>
+    <string name="error_wrong_email_or_password">Wrong email or password</string>
 </resources>

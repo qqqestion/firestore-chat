@@ -17,9 +17,10 @@ class LoginViewModel(
     private val stateData: MutableStateFlow<AuthState> = MutableStateFlow(AuthState.Empty)
     val state: StateFlow<AuthState> = stateData.asStateFlow()
 
-    enum class Effect {
-        NavigateToSetupAccount,
-        NavigateToMain
+    sealed class Effect {
+        object NavigateToSetupAccount : Effect()
+        object NavigateToMain : Effect()
+        data class Error(val error: AuthUseCase.AuthResult.Error) : Effect()
     }
 
     private val effectsData = MutableSharedFlow<Effect>(
@@ -56,6 +57,7 @@ class LoginViewModel(
         val action = when (response) {
             AuthUseCase.AuthResult.UserLogin -> Effect.NavigateToMain
             AuthUseCase.AuthResult.UserCreated, AuthUseCase.AuthResult.UserWithoutName -> Effect.NavigateToSetupAccount
+            is AuthUseCase.AuthResult.Error -> Effect.Error(response)
         }
         stateData.tryEmit(AuthState.Done)
         effectsData.tryEmit(action)

@@ -2,10 +2,12 @@ package ru.tashkent.data.repositories
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
-import ru.tashkent.data.awaitTask
+import ru.tashkent.data.exts.awaitTask
 import ru.tashkent.domain.EmptyEither
 import ru.tashkent.domain.mapLeft
 import ru.tashkent.domain.mapRight
@@ -23,7 +25,13 @@ internal class MessengerAuthRepository @Inject constructor() : AuthRepository {
         .signInWithEmailAndPassword(email.value, password.value)
         .awaitTask()
         .mapRight { }
-        .mapLeft { AuthRepository.LoginError.Unknown }
+        .mapLeft {
+            when (it) {
+                is FirebaseAuthInvalidUserException -> AuthRepository.LoginError.Unknown // can't happen I think
+                is FirebaseAuthInvalidCredentialsException -> AuthRepository.LoginError.InvalidPassword
+                else -> AuthRepository.LoginError.Unknown
+            }
+        }
 
     override suspend fun checkIfAdditionalInfoSet(): Boolean = try {
         FirebaseFirestore.getInstance().collection("users")

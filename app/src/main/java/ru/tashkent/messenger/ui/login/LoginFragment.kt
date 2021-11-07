@@ -13,12 +13,10 @@ import androidx.navigation.fragment.findNavController
 import dagger.Lazy
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import ru.tashkent.domain.AuthUseCase
 import ru.tashkent.messenger.R
 import ru.tashkent.messenger.databinding.FragmentLoginBinding
-import ru.tashkent.messenger.exts.appComponent
-import ru.tashkent.messenger.exts.clearErrorOnAnyInput
-import ru.tashkent.messenger.exts.showErrorResId
-import ru.tashkent.messenger.exts.textOrEmpty
+import ru.tashkent.messenger.exts.*
 import ru.tashkent.messenger.viewbinding.viewBinding
 import javax.inject.Inject
 
@@ -65,6 +63,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 .navigate(LoginFragmentDirections.actionLoginFragmentToSetInfoFragment())
             LoginViewModel.Effect.NavigateToMain -> findNavController()
                 .navigate(LoginFragmentDirections.actionLoginFragmentToMyChatsFragment())
+            is LoginViewModel.Effect.Error -> showSnackBarError(effect.error)
+        }
+    }
+
+    private fun showSnackBarError(error: AuthUseCase.AuthResult.Error) {
+        when (error) {
+            AuthUseCase.AuthResult.Error.InvalidPassword -> requireView().showSnackbar(R.string.error_wrong_email_or_password)
+            AuthUseCase.AuthResult.Error.Unknown -> requireView().showSnackbar(R.string.error_unknown)
         }
     }
 
@@ -74,7 +80,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding.progressBar.isInvisible = isNotLoading
         when (state) {
             AuthState.Empty, AuthState.Done, AuthState.Loading -> Unit
-            is AuthState.Error -> TODO()
             AuthState.InputError.EmailError -> binding.tilEmail.showErrorResId(R.string.error_invalid_email)
             AuthState.InputError.PasswordError -> binding.tilPassword.showErrorResId(R.string.error_invalid_password)
         }

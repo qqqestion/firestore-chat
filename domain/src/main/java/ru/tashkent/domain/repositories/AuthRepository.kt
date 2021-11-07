@@ -19,6 +19,8 @@ interface AuthRepository {
 
     sealed class LoginError {
         object Unknown : LoginError()
+
+        object InvalidPassword : LoginError()
     }
 
     sealed class RegistrationError {

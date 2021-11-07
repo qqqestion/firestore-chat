@@ -12,7 +12,7 @@ import kotlinx.coroutines.tasks.await
 import logcat.LogPriority
 import logcat.asLog
 import logcat.logcat
-import ru.tashkent.data.awaitResult
+import ru.tashkent.data.exts.awaitResult
 import ru.tashkent.data.models.FirebaseMessage
 import ru.tashkent.domain.repositories.MessageRepository
 import ru.tashkent.domain.models.Message

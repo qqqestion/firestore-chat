@@ -19,6 +19,13 @@ class AuthUseCase @Inject constructor(
         object UserLogin : AuthResult()
 
         object UserWithoutName : AuthResult()
+
+        sealed class Error : AuthResult() {
+
+            object InvalidPassword : Error()
+
+            object Unknown : Error()
+        }
     }
 
     private val flowData = MutableSharedFlow<AuthResult>(
@@ -43,10 +50,15 @@ class AuthUseCase @Inject constructor(
         password: User.Password
     ) {
         when (value) {
-            AuthRepository.RegistrationError.Unknown -> TODO()
+            AuthRepository.RegistrationError.Unknown -> flowData.tryEmit(AuthResult.Error.Unknown)
             AuthRepository.RegistrationError.UserExists -> {
-                when (authRepository.login(email, password)) {
-                    is Either.Left -> TODO()
+                when (val response = authRepository.login(email, password)) {
+                    is Either.Left -> {
+                        when (response.value) {
+                            AuthRepository.LoginError.InvalidPassword -> flowData.tryEmit(AuthResult.Error.InvalidPassword)
+                            AuthRepository.LoginError.Unknown -> flowData.tryEmit(AuthResult.Error.Unknown)
+                        }
+                    }
                     is Either.Right -> {
                         flowData.tryEmit(
                             if (authRepository.checkIfAdditionalInfoSet()) AuthResult.UserLogin
