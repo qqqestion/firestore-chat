@@ -1,13 +1,16 @@
 package ru.tashkent.domain.usecases
 
+import ru.tashkent.domain.CoroutineDispatchers
 import ru.tashkent.domain.Either
+import ru.tashkent.domain.ResultUseCase
 import ru.tashkent.domain.models.User
 import ru.tashkent.domain.repositories.AuthRepository
 import javax.inject.Inject
 
 class AuthUseCase @Inject constructor(
-    private val authRepository: AuthRepository
-) {
+    private val authRepository: AuthRepository,
+    dispatchers: CoroutineDispatchers
+) : ResultUseCase<AuthUseCase.Params, AuthUseCase.AuthResult>(dispatchers) {
 
     sealed class AuthResult {
 
@@ -25,10 +28,10 @@ class AuthUseCase @Inject constructor(
         }
     }
 
-    suspend fun doWork(email: User.Email, password: User.Password): AuthResult =
-        when (val create = authRepository.createAccount(email, password)) {
+    override suspend fun doWork(params: Params): AuthResult =
+        when (val create = authRepository.createAccount(params.email, params.password)) {
             is Either.Left -> {
-                handleRegistrationError(create.value, email, password)
+                handleRegistrationError(create.value, params.email, params.password)
             }
             is Either.Right -> AuthResult.UserCreated
         }
@@ -55,4 +58,9 @@ class AuthUseCase @Inject constructor(
             }
         }
     }
+
+    data class Params(
+        val email: User.Email,
+        val password: User.Password
+    )
 }

@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import logcat.asLog
 import logcat.logcat
+import ru.tashkent.domain.ResultUseCase
 import ru.tashkent.domain.fold
 import ru.tashkent.domain.models.Chat
 import ru.tashkent.domain.repositories.AuthRepository
@@ -29,7 +30,7 @@ class MyChatsViewModel(
     fun refreshChats() {
         viewModelScope.launch {
             stateData.tryEmit(MyChatsState.Loading)
-            getChats.doWork().fold(::handleFailure, ::handleSuccess)
+            getChats.invoke(ResultUseCase.NoneParams).fold(::handleFailure, ::handleSuccess)
         }
     }
 
