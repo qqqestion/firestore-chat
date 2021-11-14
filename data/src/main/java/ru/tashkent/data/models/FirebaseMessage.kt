@@ -11,16 +11,18 @@ import java.util.*
 data class FirebaseMessage(
     @DocumentId val id: String? = null,
     val chatId: String? = null,
-    val sender: String? = null,
+    val senderId: String? = null,
     val text: String? = null,
     @ServerTimestamp val timeSent: Timestamp? = null,
-    @get:Exclude val fromCurrentUser: Boolean = false
+    @get:Exclude val fromCurrentUser: Boolean = false,
+    @get:Exclude val senderName: String = ""
 ) {
 
     fun toMessage() = Message(
         id!!,
         chatId!!,
-        sender!!,
+        senderId!!,
+        senderName,
         text!!,
         timeSent!!.millis,
         fromCurrentUser
@@ -30,8 +32,9 @@ data class FirebaseMessage(
 fun Message.toFirebaseMessage() = FirebaseMessage(
     id,
     chatId,
-    sender,
+    senderId,
     text,
     Timestamp(Date(timeSent)),
-    fromCurrentUser
+    fromCurrentUser,
+    senderName
 )
