@@ -49,7 +49,6 @@ class MyChatsFragment : Fragment(R.layout.fragment_mychats) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("!!!", "onViewCreated")
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -59,6 +58,9 @@ class MyChatsFragment : Fragment(R.layout.fragment_mychats) {
         setupRecyclerView()
         binding.swipeRefreshLayout.setOnRefreshListener {
             viewModel.refreshChats()
+        }
+        binding.fabCreateChat.setOnClickListener {
+            TODO("Add creating new chat")
         }
     }
 
@@ -82,5 +84,4 @@ class MyChatsFragment : Fragment(R.layout.fragment_mychats) {
             }
         }
     }
-
 }

@@ -14,5 +14,6 @@ class ChatViewHolder(
         binding.root.setOnClickListener {
             onChatClick?.invoke(chat)
         }
+        TODO("Add binding author name")
     }
 }
