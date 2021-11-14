@@ -9,16 +9,20 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.tashkent.domain.models.Message
 import ru.tashkent.domain.repositories.MessageRepository
+import ru.tashkent.domain.repositories.UserRepository
 
 class ChatViewModel(
     private val chatId: String,
-    private val repository: MessageRepository
+    private val messageRepository: MessageRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
-    val newMessages = repository.messages
+    val newMessages = messageRepository.messages
 
     private val messagesData = MutableSharedFlow<List<Message>>(
         replay = 0,
@@ -33,7 +37,7 @@ class ChatViewModel(
 
     private fun loadMessages() {
         viewModelScope.launch {
-            repository.getMessagesByChatId(chatId)
+            messageRepository.getMessagesByChatId(chatId)
                 .fold({ handleMessages(it) }, ::handleMessagesFailure)
         }
     }
@@ -41,7 +45,7 @@ class ChatViewModel(
     private fun handleMessages(messages: List<Message>) {
         val message = messages.lastOrNull()
         messagesData.tryEmit(messages)
-        repository.initMessages(chatId, message?.timeSent ?: 0L)
+        messageRepository.initMessages(chatId, message?.timeSent ?: 0L)
     }
 
     private fun handleMessagesFailure(throwable: Throwable) {
@@ -49,25 +53,26 @@ class ChatViewModel(
 
     fun sendMessage(chatId: String, messageText: String) {
         viewModelScope.launch {
-            repository.sendMessage(chatId, messageText)
+            messageRepository.sendMessage(chatId, messageText)
         }
     }
 
     fun deleteMessages(chatId: String) {
         viewModelScope.launch {
-            repository.deleteMessagesInChat(chatId)
+            messageRepository.deleteMessagesInChat(chatId)
         }
     }
 
     class ViewModelFactory @AssistedInject constructor(
         @Assisted("chatId") private val chatId: String,
-        private val repository: MessageRepository
+        private val messageRepository: MessageRepository,
+        private val userRepository: UserRepository
     ) : ViewModelProvider.Factory {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             require(modelClass == ChatViewModel::class.java)
             @Suppress("UNCHECKED_CAST")
-            return ChatViewModel(chatId, repository) as T
+            return ChatViewModel(chatId, messageRepository, userRepository) as T
         }
 
         @AssistedFactory
