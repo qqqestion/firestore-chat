@@ -38,4 +38,11 @@ class MessengerUserRepository @Inject constructor() : UserRepository {
         }
         return savedUser!!
     }
+
+    override suspend fun getUserById(userId: String): User? = usersCollection
+        .document(userId)
+        .get()
+        .await()
+        .toObject(FirebaseUser::class.java)
+        ?.toUser()
 }
