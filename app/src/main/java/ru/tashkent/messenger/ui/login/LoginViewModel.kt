@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import ru.tashkent.domain.AuthUseCase
+import ru.tashkent.domain.usecases.AuthUseCase
 import ru.tashkent.domain.models.User
 import javax.inject.Inject
 

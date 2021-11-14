@@ -3,7 +3,7 @@ package ru.tashkent.messenger.ui.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.flow.flow
-import ru.tashkent.domain.SplashUseCase
+import ru.tashkent.domain.usecases.SplashUseCase
 import javax.inject.Inject
 
 class SplashViewModel(

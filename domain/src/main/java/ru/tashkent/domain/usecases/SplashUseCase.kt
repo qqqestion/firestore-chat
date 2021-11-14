@@ -1,4 +1,4 @@
-package ru.tashkent.domain
+package ru.tashkent.domain.usecases
 
 import ru.tashkent.domain.repositories.AuthRepository
 import javax.inject.Inject

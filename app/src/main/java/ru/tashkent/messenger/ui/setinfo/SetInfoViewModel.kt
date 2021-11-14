@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.tashkent.domain.Either
-import ru.tashkent.domain.SetInfoUseCase
+import ru.tashkent.domain.usecases.SetInfoUseCase
 import ru.tashkent.domain.models.User
 import javax.inject.Inject
 

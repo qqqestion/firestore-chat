@@ -10,10 +10,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import dagger.Lazy
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import ru.tashkent.domain.AuthUseCase
+import ru.tashkent.domain.usecases.AuthUseCase
 import ru.tashkent.messenger.R
 import ru.tashkent.messenger.databinding.FragmentLoginBinding
 import ru.tashkent.messenger.exts.*

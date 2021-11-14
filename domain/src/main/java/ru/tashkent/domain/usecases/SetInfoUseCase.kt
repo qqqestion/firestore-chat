@@ -1,5 +1,7 @@
-package ru.tashkent.domain
+package ru.tashkent.domain.usecases
 
+import ru.tashkent.domain.Either
+import ru.tashkent.domain.EmptyEither
 import ru.tashkent.domain.models.User
 import ru.tashkent.domain.repositories.UserRepository
 import java.lang.Exception

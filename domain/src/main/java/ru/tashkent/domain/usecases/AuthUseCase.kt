@@ -1,9 +1,6 @@
-package ru.tashkent.domain
+package ru.tashkent.domain.usecases
 
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import ru.tashkent.domain.Either
 import ru.tashkent.domain.models.User
 import ru.tashkent.domain.repositories.AuthRepository
 import javax.inject.Inject
