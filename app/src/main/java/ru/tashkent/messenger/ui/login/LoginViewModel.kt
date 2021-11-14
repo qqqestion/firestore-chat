@@ -14,9 +14,6 @@ class LoginViewModel(
     private val auth: AuthUseCase
 ) : ViewModel() {
 
-    private val stateData: MutableStateFlow<AuthState> = MutableStateFlow(AuthState.Empty)
-    val state: StateFlow<AuthState> = stateData.asStateFlow()
-
     sealed class Effect {
         object NavigateToSetupAccount : Effect()
         object NavigateToMain : Effect()
@@ -30,11 +27,8 @@ class LoginViewModel(
     )
     val effects: SharedFlow<Effect> = effectsData.asSharedFlow()
 
-    init {
-        viewModelScope.launch {
-            auth.flow.collect(::handleAuth)
-        }
-    }
+    private val stateData: MutableStateFlow<AuthState> = MutableStateFlow(AuthState.Empty)
+    val state: StateFlow<AuthState> = stateData.asStateFlow()
 
     fun login(email: String, password: String) {
         val validatedEmail = User.Email.createIfValid(email)
@@ -49,7 +43,7 @@ class LoginViewModel(
     private fun submitLogin(email: User.Email, password: User.Password) {
         stateData.tryEmit(AuthState.Loading)
         viewModelScope.launch {
-            auth.auth(email, password)
+            handleAuth(auth.doWork(email, password))
         }
     }
 

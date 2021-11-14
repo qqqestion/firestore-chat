@@ -28,43 +28,32 @@ class AuthUseCase @Inject constructor(
         }
     }
 
-    private val flowData = MutableSharedFlow<AuthResult>(
-        replay = 0,
-        extraBufferCapacity = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
-    )
-    val flow: SharedFlow<AuthResult> = flowData.asSharedFlow()
-
-    suspend fun auth(email: User.Email, password: User.Password) {
+    suspend fun doWork(email: User.Email, password: User.Password): AuthResult =
         when (val create = authRepository.createAccount(email, password)) {
             is Either.Left -> {
                 handleRegistrationError(create.value, email, password)
             }
-            is Either.Right -> flowData.tryEmit(AuthResult.UserCreated)
+            is Either.Right -> AuthResult.UserCreated
         }
-    }
+
 
     private suspend fun handleRegistrationError(
         value: AuthRepository.RegistrationError,
         email: User.Email,
         password: User.Password
-    ) {
-        when (value) {
-            AuthRepository.RegistrationError.Unknown -> flowData.tryEmit(AuthResult.Error.Unknown)
-            AuthRepository.RegistrationError.UserExists -> {
-                when (val response = authRepository.login(email, password)) {
-                    is Either.Left -> {
-                        when (response.value) {
-                            AuthRepository.LoginError.InvalidPassword -> flowData.tryEmit(AuthResult.Error.InvalidPassword)
-                            AuthRepository.LoginError.Unknown -> flowData.tryEmit(AuthResult.Error.Unknown)
-                        }
+    ): AuthResult = when (value) {
+        AuthRepository.RegistrationError.Unknown -> AuthResult.Error.Unknown
+        AuthRepository.RegistrationError.UserExists -> {
+            when (val response = authRepository.login(email, password)) {
+                is Either.Left -> {
+                    when (response.value) {
+                        AuthRepository.LoginError.InvalidPassword -> AuthResult.Error.InvalidPassword
+                        AuthRepository.LoginError.Unknown -> AuthResult.Error.Unknown
                     }
-                    is Either.Right -> {
-                        flowData.tryEmit(
-                            if (authRepository.checkIfAdditionalInfoSet()) AuthResult.UserLogin
-                            else AuthResult.UserWithoutName
-                        )
-                    }
+                }
+                is Either.Right -> {
+                    if (authRepository.checkIfAdditionalInfoSet()) AuthResult.UserLogin
+                    else AuthResult.UserWithoutName
                 }
             }
         }
