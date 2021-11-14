@@ -16,4 +16,11 @@ inline fun <A, B, C> Either<A, B>.mapRight(fn: (B) -> C): Either<A, C> = when (t
     is Either.Right -> Either.Right(fn(value))
 }
 
+inline fun <A, B> Either<A, B>.fold(fnL: (A) -> Unit, fnR: (B) -> Unit): Either<A, B> = this.apply {
+    when (this) {
+        is Either.Left -> fnL(value)
+        is Either.Right -> fnR(value)
+    }
+}
+
 typealias EmptyEither<E> = Either<E, Unit>
