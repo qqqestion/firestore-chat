@@ -17,11 +17,14 @@ import javax.inject.Inject
 
 internal class MessengerAuthRepository @Inject constructor() : AuthRepository {
 
+    private val auth = FirebaseAuth.getInstance()
+
+    override suspend fun isAuthorized(): Boolean = auth.uid != null && checkIfAdditionalInfoSet()
+
     override suspend fun login(
         email: User.Email,
         password: User.Password
-    ): EmptyEither<AuthRepository.LoginError> = FirebaseAuth
-        .getInstance()
+    ): EmptyEither<AuthRepository.LoginError> = auth
         .signInWithEmailAndPassword(email.value, password.value)
         .awaitTask()
         .mapRight { }
@@ -47,16 +50,14 @@ internal class MessengerAuthRepository @Inject constructor() : AuthRepository {
     override suspend fun createAccount(
         email: User.Email,
         password: User.Password
-    ): EmptyEither<AuthRepository.RegistrationError> =
-        FirebaseAuth
-            .getInstance()
-            .createUserWithEmailAndPassword(email.value, password.value)
-            .awaitTask()
-            .mapRight {}
-            .mapLeft {
-                when (it) {
-                    is FirebaseAuthUserCollisionException -> AuthRepository.RegistrationError.UserExists
-                    else -> AuthRepository.RegistrationError.Unknown
-                }
+    ): EmptyEither<AuthRepository.RegistrationError> = auth
+        .createUserWithEmailAndPassword(email.value, password.value)
+        .awaitTask()
+        .mapRight {}
+        .mapLeft {
+            when (it) {
+                is FirebaseAuthUserCollisionException -> AuthRepository.RegistrationError.UserExists
+                else -> AuthRepository.RegistrationError.Unknown
             }
+        }
 }

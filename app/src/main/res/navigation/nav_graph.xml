@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment"
+    app:startDestination="@id/splashFragment"
     >
 
     <fragment
@@ -17,7 +17,7 @@
         <action
             android:id="@+id/action_loginFragment_to_myChatsFragment"
             app:destination="@id/myChatsFragment"
-            app:popUpTo="@id/loginFragment"
+            app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true"
             />
     </fragment>
@@ -31,7 +31,7 @@
         <action
             android:id="@+id/action_setInfoFragment_to_myChatsFragment"
             app:destination="@id/myChatsFragment"
-            app:popUpTo="@id/loginFragment"
+            app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true"
             />
     </fragment>
@@ -54,6 +54,24 @@
         <argument
             android:name="chat"
             app:argType="ru.tashkent.data.models.FirebaseChat"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="ru.tashkent.messenger.ui.splash.SplashFragment"
+        android:label="SplashFragment"
+        >
+        <action
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true"
+            />
+        <action
+            android:id="@+id/action_splashFragment_to_myChatsFragment"
+            app:destination="@id/myChatsFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true"
             />
     </fragment>
 </navigation>

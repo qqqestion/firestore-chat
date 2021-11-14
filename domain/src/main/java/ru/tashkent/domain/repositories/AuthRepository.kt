@@ -5,6 +5,8 @@ import ru.tashkent.domain.models.User
 
 interface AuthRepository {
 
+    suspend fun isAuthorized(): Boolean
+
     suspend fun createAccount(
         email: User.Email,
         password: User.Password

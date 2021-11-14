@@ -5,6 +5,7 @@ import ru.tashkent.messenger.ui.chat.ChatFragment
 import ru.tashkent.messenger.ui.login.LoginFragment
 import ru.tashkent.messenger.ui.mychats.MyChatsFragment
 import ru.tashkent.messenger.ui.setinfo.SetInfoFragment
+import ru.tashkent.messenger.ui.splash.SplashFragment
 
 @Component(modules = [MainModule::class])
 interface AppComponent {
@@ -13,4 +14,5 @@ interface AppComponent {
     fun inject(fragment: MyChatsFragment)
     fun inject(fragment: LoginFragment)
     fun inject(setInfoFragment: SetInfoFragment)
+    fun inject(splashFragment: SplashFragment)
 }
