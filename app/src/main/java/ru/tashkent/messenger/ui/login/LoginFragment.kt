@@ -25,8 +25,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private val binding by viewBinding<FragmentLoginBinding>()
 
     @Inject
-    lateinit var factory: Lazy<LoginViewModel.Factory>
-    private val viewModel by viewModels<LoginViewModel> { factory.get() }
+    lateinit var factory: LoginViewModel.Factory
+    private val viewModel by viewModels<LoginViewModel> { factory }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

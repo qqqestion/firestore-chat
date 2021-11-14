@@ -28,10 +28,10 @@ class MyChatsFragment : Fragment(R.layout.fragment_mychats) {
     private val binding by viewBinding<FragmentMychatsBinding>()
 
     @Inject
-    lateinit var viewModelFactory: Lazy<MyChatsViewModel.ViewModelFactory>
+    lateinit var viewModelFactory: MyChatsViewModel.ViewModelFactory
 
     private val viewModel by viewModels<MyChatsViewModel> {
-        viewModelFactory.get()
+        viewModelFactory
     }
 
     private val chatsAdapter = ChatAdapter { chat ->

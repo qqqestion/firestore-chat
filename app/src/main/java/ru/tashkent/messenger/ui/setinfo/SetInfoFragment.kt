@@ -27,9 +27,9 @@ class SetInfoFragment : Fragment(R.layout.fragment_set_info) {
     private val binding: FragmentSetInfoBinding by viewBinding()
 
     @Inject
-    lateinit var factory: Lazy<SetInfoViewModel.Factory>
+    lateinit var factory: SetInfoViewModel.Factory
 
-    private val viewModel: SetInfoViewModel by viewModels { factory.get() }
+    private val viewModel: SetInfoViewModel by viewModels { factory }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
