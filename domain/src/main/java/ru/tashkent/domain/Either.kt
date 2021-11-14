@@ -1,5 +1,7 @@
 package ru.tashkent.domain
 
+import java.lang.Exception
+
 sealed class Either<out A, out B> {
 
     data class Left<out A>(val value: A) : Either<A, Nothing>()
@@ -21,6 +23,12 @@ inline fun <A, B> Either<A, B>.fold(fnL: (A) -> Unit, fnR: (B) -> Unit): Either<
         is Either.Left -> fnL(value)
         is Either.Right -> fnR(value)
     }
+}
+
+inline fun <B> runEither(body: () -> B): Either<Throwable, B> = try {
+    Either.Right(body())
+} catch (e: Throwable) {
+    Either.Left(e)
 }
 
 typealias EmptyEither<E> = Either<E, Unit>

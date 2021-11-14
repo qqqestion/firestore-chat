@@ -50,6 +50,7 @@ class ChatViewModel(
     }
 
     private fun handleMessagesFailure(throwable: Throwable) {
+        TODO("Handling error in getting messages")
     }
 
     fun sendMessage(chatId: String, messageText: String) {
