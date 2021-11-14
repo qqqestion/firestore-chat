@@ -22,6 +22,7 @@
             android:id="@+id/rv_chats"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:paddingHorizontal="10dp"
             tools:listitem="@layout/item_chat"
             />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
