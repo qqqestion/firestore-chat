@@ -12,10 +12,11 @@ import ru.tashkent.domain.fold
 import ru.tashkent.domain.models.Chat
 import ru.tashkent.domain.repositories.AuthRepository
 import ru.tashkent.domain.repositories.ChatRepository
+import ru.tashkent.domain.usecases.GetChatsUseCase
 import javax.inject.Inject
 
 class MyChatsViewModel(
-    private val repository: ChatRepository
+    private val getChats: GetChatsUseCase
 ) : ViewModel() {
 
     private val stateData: MutableStateFlow<MyChatsState> = MutableStateFlow(MyChatsState.Loading)
@@ -28,7 +29,7 @@ class MyChatsViewModel(
     fun refreshChats() {
         viewModelScope.launch {
             stateData.tryEmit(MyChatsState.Loading)
-            repository.getChats().fold(::handleFailure, ::handleSuccess)
+            getChats.doWork().fold(::handleFailure, ::handleSuccess)
         }
     }
 
@@ -42,13 +43,13 @@ class MyChatsViewModel(
     }
 
     class ViewModelFactory @Inject constructor(
-        private val repository: ChatRepository
+        private val getChats: GetChatsUseCase
     ) : ViewModelProvider.Factory {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             require(modelClass == MyChatsViewModel::class.java)
             @Suppress("UNCHECKED_CAST")
-            return MyChatsViewModel(repository) as T
+            return MyChatsViewModel(getChats) as T
         }
     }
 }
