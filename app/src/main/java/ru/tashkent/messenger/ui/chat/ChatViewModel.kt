@@ -16,14 +16,18 @@ import ru.tashkent.domain.fold
 import ru.tashkent.domain.models.Message
 import ru.tashkent.domain.repositories.MessageRepository
 import ru.tashkent.domain.repositories.UserRepository
+import ru.tashkent.domain.usecases.GetMessagesUseCase
+import ru.tashkent.domain.usecases.GetNewMessagesUseCase
+import ru.tashkent.domain.usecases.SendMessageUseCase
 
 class ChatViewModel(
     private val chatId: String,
-    private val messageRepository: MessageRepository,
-    private val userRepository: UserRepository
+    private val getMessages: GetMessagesUseCase,
+    private val sendMessage: SendMessageUseCase,
+    private val getNewMessages: GetNewMessagesUseCase
 ) : ViewModel() {
 
-    val newMessages = messageRepository.messages
+    val newMessages = getNewMessages.newMessages
 
     private val messagesData = MutableSharedFlow<List<Message>>(
         replay = 0,
@@ -38,15 +42,15 @@ class ChatViewModel(
 
     private fun loadMessages() {
         viewModelScope.launch {
-            messageRepository.getMessagesByChatId(chatId)
+            getMessages.doWork(chatId)
                 .fold(::handleMessagesFailure, ::handleMessages)
         }
     }
 
     private fun handleMessages(messages: List<Message>) {
-        val message = messages.lastOrNull()
         messagesData.tryEmit(messages)
-        messageRepository.initMessages(chatId, message?.timeSent ?: 0L)
+        val message = messages.lastOrNull()
+        getNewMessages.doWork(chatId, message?.timeSent ?: 0L)
     }
 
     private fun handleMessagesFailure(throwable: Throwable) {
@@ -55,26 +59,21 @@ class ChatViewModel(
 
     fun sendMessage(chatId: String, messageText: String) {
         viewModelScope.launch {
-            messageRepository.sendMessage(chatId, messageText)
-        }
-    }
-
-    fun deleteMessages(chatId: String) {
-        viewModelScope.launch {
-            messageRepository.deleteMessagesInChat(chatId)
+            sendMessage.doWork(chatId, messageText)
         }
     }
 
     class ViewModelFactory @AssistedInject constructor(
         @Assisted("chatId") private val chatId: String,
-        private val messageRepository: MessageRepository,
-        private val userRepository: UserRepository
+        private val getMessages: GetMessagesUseCase,
+        private val sendMessage: SendMessageUseCase,
+        private val getNewMessages: GetNewMessagesUseCase
     ) : ViewModelProvider.Factory {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             require(modelClass == ChatViewModel::class.java)
             @Suppress("UNCHECKED_CAST")
-            return ChatViewModel(chatId, messageRepository, userRepository) as T
+            return ChatViewModel(chatId, getMessages, sendMessage, getNewMessages) as T
         }
 
         @AssistedFactory

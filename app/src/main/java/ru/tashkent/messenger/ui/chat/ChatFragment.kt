@@ -63,10 +63,6 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
             viewModel.sendMessage(args.chat.id!!, binding.etInputMessage.text.toString())
             binding.etInputMessage.setText("")
         }
-
-        binding.ivOptions.setOnClickListener {
-            viewModel.deleteMessages(args.chat.id!!)
-        }
     }
 
     private fun setupRecyclerView() = with(binding.rvMessages) {
