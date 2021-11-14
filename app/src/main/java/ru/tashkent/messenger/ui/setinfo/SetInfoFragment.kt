@@ -16,6 +16,8 @@ import kotlinx.coroutines.launch
 import ru.tashkent.messenger.R
 import ru.tashkent.messenger.databinding.FragmentSetInfoBinding
 import ru.tashkent.messenger.exts.appComponent
+import ru.tashkent.messenger.exts.clearErrorOnAnyInput
+import ru.tashkent.messenger.exts.showErrorResId
 import ru.tashkent.messenger.exts.textOrEmpty
 import ru.tashkent.messenger.viewbinding.viewBinding
 import javax.inject.Inject
@@ -44,6 +46,7 @@ class SetInfoFragment : Fragment(R.layout.fragment_set_info) {
                 viewModel.state.collect(::handleState)
             }
         }
+        binding.tilName.clearErrorOnAnyInput()
     }
 
     private fun handleState(state: SetInfoViewModel.State) {
@@ -51,7 +54,7 @@ class SetInfoFragment : Fragment(R.layout.fragment_set_info) {
         binding.tvSubmit.isEnabled = isNotLoading
         binding.progressBar.isInvisible = isNotLoading
         when (state) {
-            SetInfoViewModel.State.InputError -> TODO()
+            SetInfoViewModel.State.InputError -> binding.tilName.showErrorResId(R.string.error_invalid_name)
             SetInfoViewModel.State.Loading, SetInfoViewModel.State.Empty -> Unit
             SetInfoViewModel.State.Success -> findNavController()
                 .navigate(SetInfoFragmentDirections.actionSetInfoFragmentToMyChatsFragment())
