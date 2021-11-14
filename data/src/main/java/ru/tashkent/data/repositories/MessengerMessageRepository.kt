@@ -65,7 +65,7 @@ internal class MessengerMessageRepository @Inject constructor() : MessageReposit
                         val message = it.document.toObject(FirebaseMessage::class.java)
                         logcat { "New message: $message" }
                         messagesData.tryEmit(
-                            message.copy(fromCurrentUser = message.sender == FirebaseAuth.getInstance().uid)
+                            message.copy(fromCurrentUser = message.senderId == FirebaseAuth.getInstance().uid)
                                 .toMessage()
                         )
                     }
