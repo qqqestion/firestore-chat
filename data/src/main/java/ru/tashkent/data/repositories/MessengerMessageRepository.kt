@@ -13,7 +13,10 @@ import logcat.LogPriority
 import logcat.asLog
 import logcat.logcat
 import ru.tashkent.data.exts.awaitResult
+import ru.tashkent.data.exts.awaitTask
 import ru.tashkent.data.models.FirebaseMessage
+import ru.tashkent.domain.Either
+import ru.tashkent.domain.mapRight
 import ru.tashkent.domain.repositories.MessageRepository
 import ru.tashkent.domain.models.Message
 import java.util.*
@@ -73,13 +76,13 @@ internal class MessengerMessageRepository @Inject constructor() : MessageReposit
             }
     }
 
-    override suspend fun getMessagesByChatId(chatId: String): Result<List<Message>> =
+    override suspend fun getMessagesByChatId(chatId: String): Either<Throwable, List<Message>> =
         messagesCollection
             .whereEqualTo("chatId", chatId)
             .orderBy("timeSent")
             .get()
-            .awaitResult()
-            .map { doc ->
+            .awaitTask()
+            .mapRight { doc ->
                 doc.mapNotNull {
                     it.toObject(FirebaseMessage::class.java)
                         .copy(fromCurrentUser = it["sender"] as String == FirebaseAuth.getInstance().uid)

@@ -2,6 +2,7 @@ package ru.tashkent.domain.repositories
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
+import ru.tashkent.domain.Either
 import ru.tashkent.domain.models.Message
 
 interface MessageRepository {
@@ -10,7 +11,7 @@ interface MessageRepository {
 
     fun initMessages(chatId: String, lastMessageTimeSent: Long)
 
-    suspend fun getMessagesByChatId(chatId: String): Result<List<Message>>
+    suspend fun getMessagesByChatId(chatId: String): Either<Throwable, List<Message>>
 
     suspend fun sendMessage(chatId: String, messageText: String)
 

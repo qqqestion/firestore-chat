@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import ru.tashkent.domain.fold
 import ru.tashkent.domain.models.Message
 import ru.tashkent.domain.repositories.MessageRepository
 import ru.tashkent.domain.repositories.UserRepository
@@ -38,7 +39,7 @@ class ChatViewModel(
     private fun loadMessages() {
         viewModelScope.launch {
             messageRepository.getMessagesByChatId(chatId)
-                .fold({ handleMessages(it) }, ::handleMessagesFailure)
+                .fold(::handleMessagesFailure, ::handleMessages)
         }
     }
 
