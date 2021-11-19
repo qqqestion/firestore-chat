@@ -36,7 +36,7 @@ class SetInfoViewModel(
     private fun saveName(name: User.Name) {
         stateData.tryEmit(State.Loading)
         viewModelScope.launch {
-            when (setInfo.doWork(name)) {
+            when (setInfo.invoke(SetInfoUseCase.Params(name))) {
                 is Either.Left -> TODO()
                 is Either.Right -> stateData.tryEmit(State.Success)
             }

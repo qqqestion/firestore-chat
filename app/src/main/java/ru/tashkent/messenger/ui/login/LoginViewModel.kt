@@ -43,7 +43,7 @@ class LoginViewModel(
     private fun submitLogin(email: User.Email, password: User.Password) {
         stateData.tryEmit(AuthState.Loading)
         viewModelScope.launch {
-            handleAuth(auth.doWork(email, password))
+            handleAuth(auth.invoke(AuthUseCase.Params(email, password)))
         }
     }
 

@@ -9,13 +9,9 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.tashkent.domain.fold
 import ru.tashkent.domain.models.Message
-import ru.tashkent.domain.repositories.MessageRepository
-import ru.tashkent.domain.repositories.UserRepository
 import ru.tashkent.domain.usecases.GetMessagesUseCase
 import ru.tashkent.domain.usecases.GetNewMessagesUseCase
 import ru.tashkent.domain.usecases.SendMessageUseCase
@@ -42,7 +38,7 @@ class ChatViewModel(
 
     private fun loadMessages() {
         viewModelScope.launch {
-            getMessages.doWork(chatId)
+            getMessages.invoke(GetMessagesUseCase.Params(chatId))
                 .fold(::handleMessagesFailure, ::handleMessages)
         }
     }
@@ -59,7 +55,7 @@ class ChatViewModel(
 
     fun sendMessage(chatId: String, messageText: String) {
         viewModelScope.launch {
-            sendMessage.doWork(chatId, messageText)
+            sendMessage.invoke(SendMessageUseCase.Params(chatId, messageText))
         }
     }
 
