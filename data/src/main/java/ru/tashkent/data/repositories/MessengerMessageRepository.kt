@@ -12,7 +12,6 @@ import kotlinx.coroutines.tasks.await
 import logcat.LogPriority
 import logcat.asLog
 import logcat.logcat
-import ru.tashkent.data.exts.awaitResult
 import ru.tashkent.data.exts.awaitTask
 import ru.tashkent.data.models.FirebaseMessage
 import ru.tashkent.domain.Either
@@ -78,14 +77,14 @@ internal class MessengerMessageRepository @Inject constructor() : MessageReposit
 
     override suspend fun getMessagesByChatId(chatId: String): Either<Throwable, List<Message>> =
         messagesCollection
-            .whereEqualTo("chatId", chatId)
-            .orderBy("timeSent")
+            .whereEqualTo(FirebaseMessage.FIELD_CHAT_ID, chatId)
+            .orderBy(FirebaseMessage.FIELD_TIME_SENT)
             .get()
             .awaitTask()
             .mapRight { doc ->
                 doc.mapNotNull {
                     it.toObject(FirebaseMessage::class.java)
-                        .copy(fromCurrentUser = it["sender"] as String == FirebaseAuth.getInstance().uid)
+                        .copy(fromCurrentUser = it[FirebaseMessage.FIELD_SENDER_ID] as String == FirebaseAuth.getInstance().uid)
                         .toMessage()
                 }
             }

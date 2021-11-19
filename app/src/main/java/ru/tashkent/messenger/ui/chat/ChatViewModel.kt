@@ -1,5 +1,6 @@
 package ru.tashkent.messenger.ui.chat
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -15,6 +16,7 @@ import ru.tashkent.domain.models.Message
 import ru.tashkent.domain.usecases.GetMessagesUseCase
 import ru.tashkent.domain.usecases.GetNewMessagesUseCase
 import ru.tashkent.domain.usecases.SendMessageUseCase
+import timber.log.Timber
 
 class ChatViewModel(
     private val chatId: String,

@@ -27,6 +27,14 @@ data class FirebaseMessage(
         timeSent!!.millis,
         fromCurrentUser
     )
+
+    companion object {
+
+        val FIELD_CHAT_ID = "chatId"
+        val FIELD_SENDER_ID = "senderId"
+        val FIELD_TEXT = "text"
+        val FIELD_TIME_SENT = "timeSent"
+    }
 }
 
 fun Message.toFirebaseMessage() = FirebaseMessage(
