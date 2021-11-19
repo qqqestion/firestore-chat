@@ -65,6 +65,7 @@ dependencies {
     implementation(Libs.lifecycleCommon)
 
     implementation(Libs.squareLogcat)
+    implementation(Libs.timber)
 
 //    kapt(Libs.daggerAndroidProcessor)
 //    implementation(Libs.daggerAndroid)
