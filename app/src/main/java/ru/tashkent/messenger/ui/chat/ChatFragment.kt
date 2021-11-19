@@ -68,6 +68,7 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
     private fun setupRecyclerView() = with(binding.rvMessages) {
         adapter = messagesAdapter
         layoutManager = LinearLayoutManager(requireContext())
+        addItemDecoration(DividerDecorator(10, 10))
     }
 
     private fun handleNewMessages(message: Message) {
