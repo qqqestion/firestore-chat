@@ -24,6 +24,8 @@ object Libs {
 
     const val squareLogcat = "com.squareup.logcat:logcat:${Versions.squareLogcat}"
 
+    const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
+
     const val coroutinesPlayServices =
         "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:${Versions.coroutinePlayServices}"
 

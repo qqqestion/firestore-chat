@@ -12,6 +12,7 @@ object Versions {
     const val androidxSwipeRefreshLayout = "1.1.0"
 
     const val squareLogcat = "0.1"
+    const val timber = "4.7.1"
 
     const val coroutinePlayServices = "1.1.1"
 
