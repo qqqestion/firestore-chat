@@ -8,6 +8,7 @@ import dagger.Provides
 import ru.tashkent.messenger.di.AppComponent
 import ru.tashkent.messenger.di.DaggerAppComponent
 import ru.tashkent.messenger.ui.chat.ChatFragment
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -19,5 +20,8 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         appComponent = DaggerAppComponent.create()
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 }
